@@ -1,36 +1,23 @@
-HOST: http://api.apiary.io/
-
---- Apiary.io ---
----
-Apiary loves API. Of course then, we have API too. 
----
--- Blueprint --
-
-
-
-Send an existing blueprint and return generated HTML. Both are expected to be in UTF-8
-POST /blueprint/generate
-> Accept: text/html
-> Content-Type: text/plain
---- Apiary.io ---
----
-Apiary loves API. Of course then, we have API too.         
----
--- Blueprint --
+-- Shopping Cart Resources --
+GET /shopping-cart
 < 200
-< Content-Type: text/html
-<div id="documentationCointainer">
-  <div id="leftColumn">
-    <h1 id="apiHeadline">Apiary.io</h1>
-    <div class="details"><p>Apiary loves API. Of course then, we have API too. </p></div>
-    <a name="blueprint"></a>
-    <div class="chapterWrapper">
-    <hgroup class="chapter">
-      <h1>Blueprint</h1>
-    </hgroup>
-    </div>
-  </div>
-</div>
+{ "items": [
+  { "url": "/shopping-cart/1" "product":"2ZY48XPZ", "quantity": 1, "name": "New socks", "price": 1.25 }
+] }
 
 
+Comment block for this resource (support [Markdown](http://daringfireball.net/projects/markdown/syntax) format syntax)
+POST /shopping-cart
+> Content-Type: application/json
+{ "product":"1AB23ORM", "quantity": 2 }
+< 201
+< Content-Type: application/json
+{ "status": "created", "url": "/shopping-cart/2" }
 
+
+-- Payment Resources --
+This resource allows you to submit payment information to process your *shopping cart* items
+POST /payment
+{ cc: "12345678900", cvc: "123", expiry: "0112" }
+< 200
+{ receipt: "/payment/receipt/1" }
