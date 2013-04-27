@@ -1,19 +1,16 @@
---- Api ---
+--- multiline ---
 
-aaaaaqqqqqqqqqqqqqqaaaaaaaaaaafdfdfdaaaaSend an existing blueprint and return gxzczczxczcxzcxeneratedsaasdasdadsd HTML. Both are expected to be in UTF-8
-POST /blueprint/generate
+Send an existing blueprint and return cgenerated HTML. Both are expected to be in UTF-8
+POST /blueprint/generate{id}
 > Accept: text/html
 > Content-Type: text/plain
-<<<EOT
 --- Apiary.io ---
 ---
-Apiary loves API. Of course then, we have API too. 
+Apiary loves API. Of course tsadasdhen, we have API too. 
 ---
 -- Blueprint --
-EOT
 < 200
 < Content-Type: text/html
-<<<EOT
 <div id="documentationCointainer">
   <div id="leftColumn">
     <h1 id="apiHeadline">Apiary.io</h1>
@@ -27,8 +24,6 @@ EOT
     </div>
   </div>
 </div>
-EOT
-
 
 Save new products in your shopping cart
 POST /shopping-cart
@@ -45,26 +40,3 @@ POST /payment
 { "cc": "12345678900", "cvc": "123", "expiry": "0112" }
 < 200
 { "receipt": "/payment/receipt/1" }
-
-Testing URL for JSON Schema Validations
-POST /url
-> Content-Type: application/json
-{ "a": "b", "c": 0}
-< 200
-{ "status": "ok" }
-
--- JSON Schema Validations --
-
-POST /url
-{
-    "type": "object",
-    "properties": {
-        "a": {
-            "type": "string",
-            "format": "alphanumeric"
-        },
-        "c": {
-            "type": "integer"
-        }
-    }
-}
