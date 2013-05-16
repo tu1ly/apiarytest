@@ -1,6 +1,6 @@
-HOST: http://www.google.com/
+HOST: http://aptest.apiary.io
 
---- sssaaaaaddaaadaa ---
+--- aaaaaaa ---
 
 ---
 Welcome to the our sample API documentation. All comments can be written in (support [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax)
@@ -12,15 +12,23 @@ The following is a section of resources related to the shopping cart
 --
 
 List products added into your shopping-cart. (comment block again in Markdown)
-GET /shopping-cart
+GET /shopping-cart/{id}/{id2}
 < 200
 < Content-Type: application/json
 { "items": [
-{ "url": "/shopping-cart/1", "product":"2ZY48XPZ", "quantity": 1, "name": "New socks", "price": 1.25 }
+{ "url": "/shopping-cart/1aa", "product":"2ZY48XPZ", "quantity": 1, "name": "New socks", "price": 1.25 }
+] }
+
+List products added into your shopping-cart. (comment block again in Markdown)
+GET /shopping-cart/?a={aaa
+< 200
+< Content-Type: application/json
+{ "items": [
+{ "url": "/shopping-cart/1bb", "product":"2ZY48XPZ", "quantity": 1, "name": "New socks", "price": 1.25 }
 ] }
 
 Save new products in your shopping cart
-POST /shopping-cart
+POST /shopping-cart/{id2}
 > Content-Type: application/json
 { "product":"1AB23ORM", "quantity": 2 }
 < 201
@@ -31,6 +39,17 @@ POST /shopping-cart
 
 This resource allows you to submit payment information to process your *shopping cart* items
 POST /payment
+> Content-Type: application/json
 { "cc": "12345678900", "cvc": "123", "expiry": "0112" }
 < 200
 { "receipt": "/payment/receipt/1" }
+
+-- JSON Schema Validations --
+
+POST /shopping-cart/{id2}
+{ "type": "object",
+          "properties": {
+            "product": { "type": "string","format": "alphanumeric" },
+            "quantity": { "type": "integer" }
+          }
+}
