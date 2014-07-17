@@ -1,55 +1,207 @@
-HOST: http://aptest.apiary.io
+FORMAT: 1A
+HOST: https://dev.fairmanager.de/
 
---- aaaaaaaaa ---
+# FairManager
+The FairManager API is used for all communication between the backend services and the web or mobile applications.  
 
----
-Welcome to the our sample API documentation. All comments can be written in (support [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax)
----
+# Group Person
+The API that focuses on interacting with instances of people registered on the system.
 
---
-Shopping Cart Resources
-The following is a section of resources related to the shopping cart
---
+## Person [/api/person/{id}]
+A single Person instance. A Person usually represents an employee of the customer who uses FairManager.
 
-List products added into your shopping-cart. (comment block again in Markdown)
-GET /shopping-cart/{id}/{id2}
-< 200
-< Content-Type: application/json
-{ "items": [
-{ "url": "/shopping-cart/1aa", "product":"2ZY48XPZ", "quantity": 1, "name": "New socks", "price": 1.25 }
-] }
+The Person resource has the following attributes:
 
-List products added into your shopping-cart. (comment block again in Markdown)
-GET /shopping-cart/?a={aaa
-< 200
-< Content-Type: application/json
-{ "items": [
-{ "url": "/shopping-cart/1bb", "product":"2ZY48XPZ", "quantity": 1, "name": "New socks", "price": 1.25 }
-] }
+- id
+- name
+- added
 
-Save new products in your shopping cart
-POST /shopping-cart/{id2}
-> Content-Type: application/json
-{ "product":"1AB23ORM", "quantity": 2 }
-< 201
-< Content-Type: application/json
-{ "status": "created", "url": "/shopping-cart/2" }
+The attributes *id* and *added* are assigned by the FairManager API at the moment of creation.
 
--- Payment Resources --
++ Parameters
+    + id (string) ... ID of the Person
+    
++ Model (application/json)
+    + Body
+    
+            {
+                "id" : "12345
+            }
 
-This resource allows you to submit payment information to process your *shopping cart* items
-POST /payment
-> Content-Type: application/json
-{ "cc": "12345678900", "cvc": "123", "expiry": "0112" }
-< 200
-{ "receipt": "/payment/receipt/1" }
+### Retrieve a single Person [GET]
++ Response 200
 
--- JSON Schema Validations --
+    [Person][]
 
-POST /shopping-cart/{id2}
-{ "type": "object",
-          "properties": {
-            "product": { "type": "string","format": "alphanumeric" },
-            "quantity": { "type": "integer" }
-          }
-}
+# Group Core API
+These API endpoints allow mainly for retrieval of information that makes up the core configuration of the FairManager instance.
+
+## Calendar Collection [/api/calendar]
+### Get available HTTP verbs [OPTIONS]
+This is usually only used by libraries to determine cross-origin capabilities.
++ Response 200
+
+        GET
++ Response 204
+    + Headers
+    
+            Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+
+### List all calendar strings [GET]
+Allows you to retrieve the locale strings to be used for the calendar.
+- Response 200 (application/json)
+
+        {
+            "msg_days"   : ["Su","Mo","Tu","We","Th","Fr","Sa"],
+            "msg_months" : ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            "msg_today"  : "Today"
+        }
+        
+## Application Configuration [/api/configuration]
+### Get available HTTP verbs [OPTIONS]
+This is usually only used by libraries to determine cross-origin capabilities.
++ Response 200
+
+        GET
++ Response 204
+    + Headers
+    
+            Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+
+### Retrieve the configuration [GET]
+Retrieves the complete set of configuration directives that are used to control how the frontend application should behave.
++ Response 200 (application/json)
+
+        {
+            "days" : [
+                { 
+                    "date"  : "2014-04-01T00:00:00.000Z",
+                    "open"  : "2014-04-01T04:30:00.000Z",
+                    "close" : "2014-04-01T15:45:00.000Z"
+                }, {
+                    "date"  : "2014-04-02T00:00:00.000Z",
+                    "open"  : "2014-04-02T05:30:00.000Z",
+                    "close" : "2014-04-02T15:45:00.000Z"
+                },{
+                    "date"  : "2014-04-03T00:00:00.000Z",
+                    "open"  : "2014-04-03T06:30:00.000Z",
+                    "close" : "2014-04-03T15:45:00.000Z"
+                },{
+                    "date"  : "2014-04-04T00:00:00.000Z",
+                    "open"  : "2014-04-04T07:30:00.000Z",
+                    "close" : "2014-04-04T15:45:00.000Z"
+                },{
+                    "date"  : "2014-04-05T00:00:00.000Z",
+                    "open"  : "2014-04-05T08:30:00.000Z",
+                    "close" : "2014-04-05T15:45:00.000Z"
+                }
+            ],
+            "pager" : {
+                "messageMaxLength"  : 110,
+                "messageInterval"   : 120000,
+                "messageLifetime"   : 60000,
+                "autoResponseDelay" : 60000,
+                "displayDuration"   : 3600000,
+                "cleanupDelay"      : 3600000
+            },
+            "resources" : [
+                {
+                    "id"   : 0,
+                    "name" : "Room 1"
+                }, {
+                    "id"   : 1,
+                    "name" : "Room 2"
+                }, {
+                    "id"   : 2,
+                    "name" : "Room 3"
+                }, {
+                    "id"   : 3,
+                    "name" : "Room 4"
+                }, {
+                    "id"   : 4,
+                    "name" : "Room 5"
+                }
+            ],
+            "features" : {
+                "maxUsers"     : 1000,
+                "maxClients"   : 500,
+                "maxResources" : 50,
+                "maxRfid"      : 2
+            }
+        }
+        
+## Countries Collection [/api/countries]
+### Get available HTTP verbs [OPTIONS]
+This is usually only used by libraries to determine cross-origin capabilities.
++ Response 200
+
+        GET
++ Response 204
+    + Headers
+    
+            Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+
+### List all used countries [GET]
+Retrieves a list of all countries that have been set on user records.
+- Response 200 (application/json)
+
+        ["England","Deutschland","Germany"]
+        
+## Languages Collection [/api/languages]
+### Get available HTTP verbs [OPTIONS]
+This is usually only used by libraries to determine cross-origin capabilities.
++ Response 200
+
+        GET
++ Response 204
+    + Headers
+    
+            Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+
+### List all available languages [GET]
+Retrieves a list of all languages known to the system. The languages are supplied as key-value pairs, with the language code being the key and a readable version of the language name (localized to the users locale) as the value.
+- Response 200 (application/json)
+
+        {
+            "de" : "German",
+            "en" : "English",
+            "fr" : "French",
+            "es" : "Spanish",
+            "it" : "Italian","nl":"Dutch","dk":"Danish","no":"Norwegian","se":"Swedish","ar":"Arabic","pl":"Polish","ru":"Russian","hu":"Hungarian","cz":"Czech","tr":"Turkish","in":"Hindi","cn":"Mandarin","hk":"Cantonese","el":"Greek","ro":"Romanian"}
+        
+## Tags Collection [/api/tags]
+### Get available HTTP verbs [OPTIONS]
+This is usually only used by libraries to determine cross-origin capabilities.
++ Response 200
+
+        GET
++ Response 204
+    + Headers
+    
+            Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+
+### List all used tags [GET]
+Retrieves a list of all tags that have been set on user records.
+- Response 200 (application/json)
+
+        ["Geschäftsführer"]
+
+## Terminals Collection [/api/terminals]
+### Get available HTTP verbs [OPTIONS]
+This is usually only used by libraries to determine cross-origin capabilities.
++ Response 200
+
+        GET
++ Response 204
+    + Headers
+    
+            Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+
+### List all Terimnals [GET]
++ Response 200 (application/json)
+
+        [{
+          "id"   : "info",
+          "name" : "OMNIKEY CardMan 5x21-CL 0",
+          "host" : "10.0.60.60"
+        }]
